@@ -46,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
                 isObscureText: true,
               ),
               const SizedBox(height: 20),
-              AuthGradiantButton(),
+              AuthGradiantButton(buttonText: 'Log In'),
               const SizedBox(height: 20),
               RichText(
                 text: TextSpan(
@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                   style: Theme.of(context).textTheme.titleMedium,
                   children: const [
                     TextSpan(
-                      text: 'Sign In',
+                      text: 'Sign Up',
                       style: TextStyle(
                         color: Pallete.gradient2,
                         fontWeight: FontWeight.bold,
