@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yt_spotify_tutorial/core/theme/app_pallete.dart';
+import 'package:yt_spotify_tutorial/features/auth/repositories/auth_remote_repository.dart';
 import 'package:yt_spotify_tutorial/features/auth/view/widgets/auth_gradiant_button.dart';
 import 'package:yt_spotify_tutorial/features/auth/view/widgets/custom_field.dart';
 
@@ -50,7 +51,16 @@ class _SignupPageState extends State<SignupPage> {
                 isObscureText: true,
               ),
               const SizedBox(height: 20),
-              AuthGradiantButton(buttonText: 'Sign Up', onTap: () {}),
+              AuthGradiantButton(
+                buttonText: 'Sign Up',
+                onTap: () async {
+                  await AuthRemoteRepository().signup(
+                    name: nameController.text,
+                    email: emailController.text,
+                    password: passwordController.text,
+                  );
+                },
+              ),
               const SizedBox(height: 20),
               RichText(
                 text: TextSpan(
