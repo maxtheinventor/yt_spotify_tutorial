@@ -5,6 +5,7 @@ import 'package:yt_spotify_tutorial/core/widgets/loader.dart';
 import 'package:yt_spotify_tutorial/features/auth/view/widgets/auth_gradiant_button.dart';
 import 'package:yt_spotify_tutorial/features/auth/view/widgets/custom_field.dart';
 import 'package:yt_spotify_tutorial/features/auth/viewmodel/auth_viewmodel.dart';
+import '../../../../core/utils.dart';
 import 'login_page.dart';
 
 class SignupPage extends ConsumerStatefulWidget {
@@ -35,22 +36,14 @@ class _SignupPageState extends ConsumerState<SignupPage> {
     ref.listen(authViewModelProvider, (_, next) {
       next?.when(
         data: (data) {
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              const SnackBar(
-                content: Text('Account created successfully! Please Log In'),
-              ),
-            );
+          showSnackBar(context, 'Account created successfully! Please Log In');
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const LoginPage()),
           );
         },
         error: (error, st) {
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(SnackBar(content: Text(error.toString())));
+          showSnackBar(context, error.toString());
         },
         loading: () {},
       );

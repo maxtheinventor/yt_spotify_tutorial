@@ -2,9 +2,17 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:fpdart/fpdart.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:yt_spotify_tutorial/core/constants/server_constant.dart';
 import 'package:yt_spotify_tutorial/core/failure/app_failure.dart';
 import 'package:yt_spotify_tutorial/features/auth/model/user_model.dart';
+
+part 'auth_remote_repository.g.dart';
+
+@riverpod
+AuthRemoteRepository authRemoteRepository(AuthRemoteRepositoryRef ref) {
+  return AuthRemoteRepository();
+}
 
 class AuthRemoteRepository {
   Future<Either<AppFailure, UserModel>> signup({
@@ -38,8 +46,11 @@ class AuthRemoteRepository {
     try {
       final response = await http.post(
         Uri.parse('${ServerConstant.serverURL}/auth/login'),
-        headers: {''
-            'Content-Type': 'application/json'},
+        headers: {
+          ''
+                  'Content-Type':
+              'application/json',
+        },
         body: jsonEncode({'email': email, 'password': password}),
       );
 
