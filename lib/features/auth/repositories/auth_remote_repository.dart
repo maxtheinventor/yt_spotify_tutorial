@@ -21,12 +21,10 @@ class AuthRemoteRepository {
       final responseBodyMap = jsonDecode(response.body) as Map<String, dynamic>;
 
       if (response.statusCode != 201) {
-        return Left(responseBodyMap['detail']);
+        return Left(AppFailure(responseBodyMap['detail']));
       }
 
-      return Right(
-        UserModel(name: name, email: email, id: responseBodyMap['id']),
-      );
+      return Right(UserModel.fromMap(responseBodyMap));
     } catch (e) {
       return Left(AppFailure(e.toString()));
     }

@@ -3,8 +3,8 @@ import 'package:yt_spotify_tutorial/core/theme/app_pallete.dart';
 import 'package:yt_spotify_tutorial/features/auth/repositories/auth_remote_repository.dart';
 import 'package:yt_spotify_tutorial/features/auth/view/widgets/auth_gradiant_button.dart';
 import 'package:yt_spotify_tutorial/features/auth/view/widgets/custom_field.dart';
-import 'package:fpdart/fpdart.dart';
 import 'login_page.dart';
+import 'package:fpdart/fpdart.dart' as fp;
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -62,8 +62,8 @@ class _SignupPageState extends State<SignupPage> {
                     password: passwordController.text,
                   );
                   final val = switch (res) {
-                    Left(value: final l) => l,
-                    Right(value: final r) => r.toString(),
+                    fp.Left(value: final l) => l,
+                    fp.Right(value: final r) => r.name,
                   };
                   print(val);
                 },
