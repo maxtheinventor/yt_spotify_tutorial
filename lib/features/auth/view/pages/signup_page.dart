@@ -65,7 +65,6 @@ class _SignupPageState extends State<SignupPage> {
                     fp.Left(value: final l) => l,
                     fp.Right(value: final r) => r.name,
                   };
-                  print(val);
                 },
               ),
               const SizedBox(height: 20),

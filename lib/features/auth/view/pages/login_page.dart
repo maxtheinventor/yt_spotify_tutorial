@@ -4,6 +4,7 @@ import 'package:yt_spotify_tutorial/features/auth/repositories/auth_remote_repos
 import 'package:yt_spotify_tutorial/features/auth/view/pages/signup_page.dart';
 import 'package:yt_spotify_tutorial/features/auth/view/widgets/auth_gradiant_button.dart';
 import 'package:yt_spotify_tutorial/features/auth/view/widgets/custom_field.dart';
+import 'package:fpdart/fpdart.dart' as fp;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -51,10 +52,16 @@ class _LoginPageState extends State<LoginPage> {
               AuthGradiantButton(
                 buttonText: 'Log In',
                 onTap: () async {
-                  await AuthRemoteRepository().login(
+                  final res = await AuthRemoteRepository().login(
                     email: emailController.text,
                     password: passwordController.text,
                   );
+
+                  final val = switch (res) {
+                    fp.Left(value: final l) => l,
+                    fp.Right(value: final r) => r,
+                  };
+                  print(val);
                 },
               ),
               const SizedBox(height: 20),
