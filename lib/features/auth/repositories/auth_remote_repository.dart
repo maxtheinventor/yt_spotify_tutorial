@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:fpdart/fpdart.dart';
+import 'package:yt_spotify_tutorial/core/constants/server_constant.dart';
 import 'package:yt_spotify_tutorial/core/failure/app_failure.dart';
 import 'package:yt_spotify_tutorial/features/auth/model/user_model.dart';
 
@@ -13,7 +14,7 @@ class AuthRemoteRepository {
   }) async {
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.0.10:8000/auth/signup'),
+        Uri.parse('${ServerConstant.serverURL}/auth/signup'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'name': name, 'email': email, 'password': password}),
       );
@@ -36,8 +37,9 @@ class AuthRemoteRepository {
   }) async {
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.0.10:8000/auth/login'),
-        headers: {'Content-Type': 'application/json'},
+        Uri.parse('${ServerConstant.serverURL}/auth/login'),
+        headers: {''
+            'Content-Type': 'application/json'},
         body: jsonEncode({'email': email, 'password': password}),
       );
 
