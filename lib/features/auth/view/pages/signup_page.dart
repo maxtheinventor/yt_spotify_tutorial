@@ -3,6 +3,8 @@ import 'package:yt_spotify_tutorial/core/theme/app_pallete.dart';
 import 'package:yt_spotify_tutorial/features/auth/repositories/auth_remote_repository.dart';
 import 'package:yt_spotify_tutorial/features/auth/view/widgets/auth_gradiant_button.dart';
 import 'package:yt_spotify_tutorial/features/auth/view/widgets/custom_field.dart';
+import 'package:fpdart/fpdart.dart';
+import 'login_page.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -54,27 +56,40 @@ class _SignupPageState extends State<SignupPage> {
               AuthGradiantButton(
                 buttonText: 'Sign Up',
                 onTap: () async {
-                  await AuthRemoteRepository().signup(
+                  final res = await AuthRemoteRepository().signup(
                     name: nameController.text,
                     email: emailController.text,
                     password: passwordController.text,
                   );
+                  final val = switch (res) {
+                    Left(value: final l) => l,
+                    Right(value: final r) => r.toString(),
+                  };
+                  print(val);
                 },
               ),
               const SizedBox(height: 20),
-              RichText(
-                text: TextSpan(
-                  text: 'Already have an account? ',
-                  style: Theme.of(context).textTheme.titleMedium,
-                  children: const [
-                    TextSpan(
-                      text: 'Sign In',
-                      style: TextStyle(
-                        color: Pallete.gradient2,
-                        fontWeight: FontWeight.bold,
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const LoginPage()),
+                  );
+                },
+                child: RichText(
+                  text: TextSpan(
+                    text: 'Already have an account? ',
+                    style: Theme.of(context).textTheme.titleMedium,
+                    children: const [
+                      TextSpan(
+                        text: 'Sign In',
+                        style: TextStyle(
+                          color: Pallete.gradient2,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],

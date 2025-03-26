@@ -1,31 +1,49 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:fpdart/fpdart.dart';
+import 'package:yt_spotify_tutorial/core/failure/app_failure.dart';
+import 'package:yt_spotify_tutorial/features/auth/model/user_model.dart';
 
 class AuthRemoteRepository {
-  Future<void> signup({
+  Future<Either<AppFailure, UserModel>> signup({
     required String name,
     required String email,
     required String password,
   }) async {
-    final response = await http.post(
-      Uri.parse('http://10.0.2.2:8000/auth/signup'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'name': name, 'email': email, 'password': password}),
-    );
+    try {
+      final response = await http.post(
+        Uri.parse('http://10.0.2.2:8000/auth/signup'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'name': name, 'email': email, 'password': password}),
+      );
 
-    print(response.body);
-    print(response.statusCode);
+      final responseBodyMap = jsonDecode(response.body) as Map<String, dynamic>;
+
+      if (response.statusCode != 201) {
+        return Left(responseBodyMap['detail']);
+      }
+
+      return Right(
+        UserModel(name: name, email: email, id: responseBodyMap['id']),
+      );
+    } catch (e) {
+      return Left(AppFailure(e.toString()));
+    }
   }
 
   Future<void> login({required String email, required String password}) async {
-    final response = await http.post(
-      Uri.parse('http://10.0.2.2:8000/auth/login'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'email': email, 'password': password}),
-    );
+    try {
+      final response = await http.post(
+        Uri.parse('http://10.0.2.2:8000/auth/login'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'email': email, 'password': password}),
+      );
 
-    print(response.body);
-    print(response.statusCode);
+      print(response.body);
+      print(response.statusCode);
+    } catch (e) {
+      print(e);
+    }
   }
 }
