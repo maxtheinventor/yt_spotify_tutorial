@@ -38,7 +38,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
-              SnackBar(
+              const SnackBar(
                 content: Text('Account created successfully! Please Log In'),
               ),
             );
@@ -47,7 +47,11 @@ class _SignupPageState extends ConsumerState<SignupPage> {
             MaterialPageRoute(builder: (context) => const LoginPage()),
           );
         },
-        error: (error, st) {},
+        error: (error, st) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(SnackBar(content: Text(error.toString())));
+        },
         loading: () {},
       );
     });
