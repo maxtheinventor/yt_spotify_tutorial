@@ -60,7 +60,7 @@ class AuthRemoteRepository {
         return Left(AppFailure(responseBodyMap['detail']));
       }
 
-      return Right(UserModel.fromMap(responseBodyMap));
+      return Right(UserModel.fromMap(responseBodyMap['user']));
     } catch (e) {
       return Left(AppFailure(e.toString()));
     }
