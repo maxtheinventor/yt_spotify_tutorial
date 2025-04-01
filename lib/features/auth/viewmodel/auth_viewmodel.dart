@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:yt_spotify_tutorial/features/auth/model/user_model.dart';
+import 'package:yt_spotify_tutorial/features/auth/repositories/auth_local_repository.dart';
 import 'package:yt_spotify_tutorial/features/auth/repositories/auth_remote_repository.dart';
 import 'package:fpdart/fpdart.dart' as fp;
 
@@ -8,11 +9,17 @@ part 'auth_viewmodel.g.dart';
 @riverpod
 class AuthViewModel extends _$AuthViewModel {
   late AuthRemoteRepository _authRemoteRepository;
+  late AuthLocalRepository _authLocalRepository;
 
   @override
   AsyncValue<UserModel>? build() {
-    _authRemoteRepository =ref.watch(authRemoteRepositoryProvider);
+    _authRemoteRepository = ref.watch(authRemoteRepositoryProvider);
+    _authLocalRepository = ref.watch(authLocalRepositoryProvider);
     return null;
+  }
+
+  Future<void> initSharedPreferences() async {
+    await _authLocalRepository.init();
   }
 
   Future<void> signUpUser({
@@ -45,7 +52,12 @@ class AuthViewModel extends _$AuthViewModel {
     final val = switch (res) {
       fp.Left(value: final l) =>
         state = AsyncError(l.message, StackTrace.current),
-      fp.Right(value: final r) => state = AsyncValue.data(r),
+      fp.Right(value: final r) => _loginSuccess(r),
     };
+  }
+
+  AsyncValue<UserModel>? _loginSuccess(UserModel user) {
+    _authLocalRepository.setToken(user.token);
+    return state = AsyncValue.data(user);
   }
 }
