@@ -63,8 +63,17 @@ class AuthViewModel extends _$AuthViewModel {
 
   Future<UserModel?> getData() async {
     state = const AsyncValue.loading();
-    if(token!=null){
+    final token = _authLocalRepository.getToken();
+    if (token != null) {
+      final res = await _authRemoteRepository.getCurrentUserData(token: token);
 
+      final val = switch (res) {
+        fp.Left(value: final l) =>
+          state = AsyncError(l.message, StackTrace.current),
+        fp.Right(value: final r) => state = AsyncValue.data(r),
+      };
+      return val.value;
     }
+    return null;
   }
 }

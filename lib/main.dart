@@ -9,6 +9,7 @@ void main() async {
   //With this, we initialize the shared preferences before running the APP
   final container = ProviderContainer();
   await container.read(authViewModelProvider.notifier).initSharedPreferences();
+  await container.read(authViewModelProvider.notifier).getData();
   runApp(UncontrolledProviderScope(container: container, child: const MyApp()));
 }
 
