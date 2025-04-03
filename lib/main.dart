@@ -9,7 +9,9 @@ void main() async {
   //With this, we initialize the shared preferences before running the APP
   final container = ProviderContainer();
   await container.read(authViewModelProvider.notifier).initSharedPreferences();
-  await container.read(authViewModelProvider.notifier).getData();
+  final userModel =
+      await container.read(authViewModelProvider.notifier).getData();
+  print(userModel);
   runApp(UncontrolledProviderScope(container: container, child: const MyApp()));
 }
 
@@ -19,7 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Music App',
       theme: AppTheme.darkThemeMode,
       home: const SignupPage(),
     );

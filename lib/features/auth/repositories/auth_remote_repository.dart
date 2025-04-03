@@ -74,8 +74,8 @@ class AuthRemoteRepository {
     required String token,
   }) async {
     try {
-      final response = await http.post(
-        Uri.parse('${ServerConstant.serverURL}/auth/login'),
+      final response = await http.get(
+        Uri.parse('${ServerConstant.serverURL}/auth/'),
         headers: {
           ''
                   'Content-Type':
