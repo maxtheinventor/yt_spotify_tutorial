@@ -10,6 +10,8 @@ import 'package:yt_spotify_tutorial/features/auth/view/widgets/custom_field.dart
 import 'package:fpdart/fpdart.dart' as fp;
 import 'package:yt_spotify_tutorial/features/auth/viewmodel/auth_viewmodel.dart';
 
+import '../../../home/view/pages/home_page.dart';
+
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
@@ -37,7 +39,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     ref.listen(authViewModelProvider, (_, next) {
       next?.when(
         data: (data) {
-          //TODO: Navigate to home page
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const HomePage()),
+            (_) => false,
+          );
         },
         error: (error, st) {
           showSnackBar(context, error.toString());

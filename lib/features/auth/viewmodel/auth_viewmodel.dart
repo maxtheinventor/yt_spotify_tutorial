@@ -1,4 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:yt_spotify_tutorial/core/providers/current_user_notifier.dart';
 import 'package:yt_spotify_tutorial/features/auth/model/user_model.dart';
 import 'package:yt_spotify_tutorial/features/auth/repositories/auth_local_repository.dart';
 import 'package:yt_spotify_tutorial/features/auth/repositories/auth_remote_repository.dart';
@@ -10,11 +11,13 @@ part 'auth_viewmodel.g.dart';
 class AuthViewModel extends _$AuthViewModel {
   late AuthRemoteRepository _authRemoteRepository;
   late AuthLocalRepository _authLocalRepository;
+  late CurrentUserNotifier _currentUserNotifier;
 
   @override
   AsyncValue<UserModel>? build() {
     _authRemoteRepository = ref.watch(authRemoteRepositoryProvider);
     _authLocalRepository = ref.watch(authLocalRepositoryProvider);
+    _currentUserNotifier = ref.watch(currentUserNotifierProvider.notifier);
     return null;
   }
 
@@ -35,7 +38,7 @@ class AuthViewModel extends _$AuthViewModel {
     );
     final val = switch (res) {
       fp.Left(value: final l) =>
-        state = AsyncError(l.message, StackTrace.current),
+      state = AsyncError(l.message, StackTrace.current),
       fp.Right(value: final r) => state = AsyncValue.data(r),
     };
   }
@@ -51,13 +54,14 @@ class AuthViewModel extends _$AuthViewModel {
     );
     final val = switch (res) {
       fp.Left(value: final l) =>
-        state = AsyncError(l.message, StackTrace.current),
+      state = AsyncError(l.message, StackTrace.current),
       fp.Right(value: final r) => _loginSuccess(r),
     };
   }
 
   AsyncValue<UserModel>? _loginSuccess(UserModel user) {
     _authLocalRepository.setToken(user.token);
+    _currentUserNotifier.addUser(user);
     return state = AsyncValue.data(user);
   }
 
@@ -69,11 +73,17 @@ class AuthViewModel extends _$AuthViewModel {
 
       final val = switch (res) {
         fp.Left(value: final l) =>
-          state = AsyncError(l.message, StackTrace.current),
-        fp.Right(value: final r) => state = AsyncValue.data(r),
+        state = AsyncError(l.message, StackTrace.current),
+      fp.Right(value: final r) => _getDataSuccess(r),
       };
       return val.value;
     }
     return null;
   }
+
+  AsyncValue<UserModel> _getDataSuccess(UserModel user) {
+    _currentUserNotifier.addUser(user);
+    return state = AsyncValue.data(user);
+  }
+
 }
