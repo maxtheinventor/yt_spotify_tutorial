@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yt_spotify_tutorial/core/theme/theme.dart';
 import 'package:yt_spotify_tutorial/features/auth/view/pages/signup_page.dart';
+import 'package:yt_spotify_tutorial/features/auth/viewmodel/auth_viewmodel.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(ProviderScope(child: const MyApp()));
+  //With this, we initialize the shared preferences before running the APP
+  final container = ProviderContainer();
+  await container.read(authViewModelProvider.notifier).initSharedPreferences();
+  runApp(UncontrolledProviderScope(container: container, child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
