@@ -6,6 +6,8 @@ import 'package:yt_spotify_tutorial/features/auth/view/pages/signup_page.dart';
 import 'package:yt_spotify_tutorial/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:yt_spotify_tutorial/features/home/view/pages/home_page.dart';
 
+import 'features/home/view/pages/upload_song_page.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //With this, we initialize the shared preferences before running the APP
@@ -24,7 +26,7 @@ class MyApp extends ConsumerWidget {
     return MaterialApp(
       title: 'Music App',
       theme: AppTheme.darkThemeMode,
-      home: currentUser == null ? const SignupPage() : const HomePage(),
+      home: currentUser == null ? const SignupPage() : const UploadSongPage(),
     );
   }
 }
